@@ -1,9 +1,16 @@
 #!/bin/bash
 
 # Paths
+# Default backup saved on external disk
 external_disk=true
+
+# Disk backup mount point
 backup_path="/backup-disk"
+
+# Origins files array
 origins=("/home/user1/files" "/home/user2/files/documents")
+
+# Destination backups
 destinations=("$backup_path/backup-user1" "$backup_path/backup-user2")
 
 # Function to perform backup for each origin-destination pair

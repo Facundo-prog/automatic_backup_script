@@ -1,48 +1,42 @@
-# Automatic backup files script
+# Automatic Backup Files Script
 
-## Prerquisites
+## Prerequisites
 
-* Rsync (included in Debian, Ubuntu, Linux Mint, etc)
-* Sudo or Root access
-* Terminal learn
+* Rsync (included in Debian, Ubuntu, Linux Mint, etc.)
+* SUDO or root access
+* Familiarity with terminal commands
 
-## Quick start
+</br>
 
+## Quick Start
 
-1- If disk on save backup is diferent a instalation disk:
+### If the backup disk is different from the installation disk:
 
-Copy UUID your disk
+Copy the UUID of your external disk:
 
     sudo blkid
 
-Editing disks mount points file
+Edit the mount points file:
 
     sudo nano /etc/fstab
 
-Replace backup external disk UUID and mount point for you configuration
+
+Replace the disk `UUID` and `mount point` (default is "/backup-disk") with your configuration:
 ```
-# /etc/fstab: static file system information.
-#
-# Use 'blkid' to print the universally unique identifier for a
-# device; this may be used with UUID= as a more robust way to name devices
-# that works even if disks are added and removed. See fstab(5).
-#
-# systemd generates mount units based on this file, see systemd.mount(5).
-# Please run 'systemctl daemon-reload' after making changes here.
-#
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 
 # Others discks
-UUID=  /boot/efi       vfat    umask=0077      0       1
+UUID=645648-kadfvadfb86teyn1sd3  /boot/efi       vfat    umask=0077      0       1
 
 # backup external disk
-UUID=645648-kadfvadfb86teyn1sd3  /backup-disk    ext4    defaults        0       0
+UUID=<replace for your disk UUID>  /<replace for moun point>    ext4    defaults        0       0
 ```
 
-1- Modify custom service:
 
-* Default backup run on 1 hour (RestartSec=3600)
-* Default bash script path is "/home/backup-files.sh" (ExecStart=/to/bash/file)
+### Modify custom service:
+
+* Default backup runs every hour (RestartSec=3600)
+* Default bash script path is "/home/backup-files.sh" (ExecStart=/to/script/file)
 
 ```
 [Unit]
@@ -60,36 +54,90 @@ RestartSec=3600
 WantedBy=multi-user.target
 ```
 
-2- Copy service into path /etc/systemd/system/
+
+
+### Copy the service to the path "/etc/systemd/system/":
+
+Copy script:
 
     sudo cp backup-files.service /etc/systemd/system/
 
+Reload system dameon:
+
     sudo systemctl dameon-reload
+
+Enable backup service:
 
     sudo systemctl enable backup-files.service
 
 
-3- Modify script
 
+### Modify script:
 ```
 # Paths
-external_disk=true // Default backup saved on external disk
-backup_path="/backup-disk" //Disk backup mount point
-origins=("/home/user1/files" "/home/user2/files/documents") // Origins files array
-destinations=("$backup_path/backup-user1" "$backup_path/backup-user2") // Destination backups
+# Default backup saved on external disk
+external_disk=true
+
+# Disk backup mount point
+backup_path="/backup-disk"
+
+# Origins files array
+origins=("/home/user1/files" "/home/user2/files/documents")
+
+# Destination backups
+destinations=("$backup_path/backup-user1" "$backup_path/backup-user2")
 ```
 
-4- Copy script into ExecStart= path defined in .service
+
+
+### Copy the script to the path defined in the service file:
+
+The default path is ExecStart=/home/backup-files.sh
 
     sudo cp backup-files.sh /home/
 
 
-5- Test script commands
+
+### Test script commands:
+
+Manually execute the script for testing:
 
     sudo bash /home/backup-files.sh
 
-6- If before Test not return never error, then start sevice
+
+
+### If no errors occurred during the test, start the service:
+
+Start service:
 
     sudo systemctl start backup-files.service
 
+
+
+### Check the status of the service:
+
     sudo systemctl status backup-files.service
+
+
+</br>
+
+
+## View backup files
+
+### If the backup disk is different from the installation disk:
+
+Show disks:
+
+    sudo lsblk
+
+Mount external disk. Command example contain disñ /dev/sdb1 and a mount point is "/backup-files":
+
+    sudo mount /dev/sdb1 /backup-files
+
+</br>
+
+### Or if the backup disk is the installation disk:
+
+Enter in folder cofigured of script backup-files.sh:
+
+    cd /backup-files 

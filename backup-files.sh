@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Paths
+external_disk=true
 backup_path="/backup-disk"
 origins=("/home/user1/files" "/home/user2/files/documents")
 destinations=("$backup_path/backup-user1" "$backup_path/backup-user2")
@@ -16,17 +17,21 @@ perform_backup() {
         return 1
     fi
 
-    # The mount point disk not exists
-    if [ ! -d "$backup_path" ]; then
-        mkdir -p "$backup_path"
-        echo "Mount point disk created"
-    fi
+    if [ external_disk ]; then
 
-    # The disk not mount
-    if ! mountpoint -q "$backup_path"; then
-        echo "Mounting disk..."
-        mount "$backup_path"
+        # The mount point disk not exists
+        if [ ! -d "$backup_path" ]; then
+            mkdir -p "$backup_path"
+            echo "Mount point disk created"
+        fi
+
+        # The disk not mount
+        if ! mountpoint -q "$backup_path"; then
+            echo "Mounting disk..."
+            mount "$backup_path"
+        fi
     fi
+    
 
     # The destination folder not exists
     if [ ! -d "$destination" ]; then
@@ -53,8 +58,11 @@ for (( i=0; i<${#origins[@]}; i++ )); do
     perform_backup "${origins[i]}" "${destinations[i]}"
 done
 
-# Umount disk
-if mountpoint -q "$backup_path"; then
-    echo "Umounting disk..."
-    umount "$backup_path"
+
+if [ external_disk ]; then
+    # Umount disk
+    if mountpoint -q "$backup_path"; then
+        echo "Umounting disk..."
+        umount "$backup_path"
+    fi
 fi

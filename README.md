@@ -36,7 +36,7 @@ UUID=645648-kadfvadfb86teyn1sd3  /boot/efi       vfat    umask=0077      0      
 UUID=<replace for your disk UUID>  /<replace for mount point>   ext4   nofail   0  0
 ```
 
-Reload system dameon:
+Reload system daemon:
 
     sudo systemctl daemon-reload
 
@@ -106,7 +106,7 @@ The default path is ExecStart=/home/backup-files.sh
 
 Concede execute permission:
 
-    sudo chmod +x /home/backup-files.sh
+    sudo chmod 754 /home/backup-files.sh
 
 ### Test script commands:
 

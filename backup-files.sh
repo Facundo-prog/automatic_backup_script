@@ -24,22 +24,6 @@ perform_backup() {
         return 1
     fi
 
-    if [ external_disk ]; then
-
-        # The mount point disk not exists
-        if [ ! -d "$backup_path" ]; then
-            mkdir -p "$backup_path"
-            echo "Mount point disk created"
-        fi
-
-        # The disk not mount
-        if ! mountpoint -q "$backup_path"; then
-            echo "Mounting disk..."
-            mount "$backup_path"
-        fi
-    fi
-    
-
     # The destination folder not exists
     if [ ! -d "$destination" ]; then
         echo "Folder $destination created"
@@ -59,6 +43,22 @@ perform_backup() {
 
     return 0
 }
+
+# Check if the mount point exists and disk is mounted
+if [ external_disk ]; then
+    # The mount point disk not exists
+    if [ ! -d "$backup_path" ]; then
+        mkdir -p "$backup_path"
+        echo "Mount point disk created"
+    fi
+
+    # The disk not mount
+    if ! mountpoint -q "$backup_path"; then
+        echo "Mounting disk..."
+        mount "$backup_path"
+    fi
+fi
+
 
 # Iterate over origin-destination pairs and perform backup
 for (( i=0; i<${#origins[@]}; i++ )); do

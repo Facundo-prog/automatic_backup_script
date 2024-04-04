@@ -22,6 +22,9 @@ Edit the mount points file:
 
 
 Replace the disk `UUID` and `mount point` (default is "/backup-disk") with your configuration:
+
+View fstab file for more information.
+
 ```
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 
@@ -31,6 +34,10 @@ UUID=645648-kadfvadfb86teyn1sd3  /boot/efi       vfat    umask=0077      0      
 # backup external disk
 UUID=<replace for your disk UUID>  /<replace for moun point>    ext4    defaults        0       0
 ```
+
+Reload system dameon:
+
+    sudo systemctl daemon-reload
 
 
 ### Modify custom service:
@@ -61,10 +68,6 @@ WantedBy=multi-user.target
 Copy script:
 
     sudo cp backup-files.service /etc/systemd/system/
-
-Reload system dameon:
-
-    sudo systemctl dameon-reload
 
 Enable backup service:
 
@@ -122,7 +125,7 @@ Start service:
 </br>
 
 
-## View backup files
+## View Backup Files
 
 ### If the backup disk is different from the installation disk:
 
@@ -130,7 +133,7 @@ Show disks:
 
     sudo lsblk
 
-Mount external disk. Command example contain disñ /dev/sdb1 and a mount point is "/backup-files":
+Mount the external disk. An example command contains disk /dev/sdb1 and a mount point is "/backup-files":
 
     sudo mount /dev/sdb1 /backup-files
 
@@ -138,6 +141,6 @@ Mount external disk. Command example contain disñ /dev/sdb1 and a mount point i
 
 ### Or if the backup disk is the installation disk:
 
-Enter in folder cofigured of script backup-files.sh:
+Enter the folder configured for the script backup-files.sh:
 
     cd /backup-files 

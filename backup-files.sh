@@ -2,16 +2,16 @@
 
 # Paths
 # Unmount disk after save backup
-unmount_dick=true
+unmount_disk=true
 
 # Disk backup mount point
 backup_path="/backup-disk"
 
 # Origins files array
-origins=("/home/user1/files" "/home/user2/files/documents")
+origins=("/home/facu/Documents/backup_folder")
 
 # Destination backups
-destinations=("$backup_path/backup-user1" "$backup_path/backup-user2")
+destinations=("$backup_path/facu")
 
 # Function to perform backup for each origin-destination pair
 perform_backup() {
@@ -51,10 +51,16 @@ if [ ! -d "$backup_path" ]; then
     echo "Mount point disk created"
 fi
 
+
+# Mount disk
+mount "$backup_path"
+echo "Mounting disk..."
+
+
 # The disk not mount
 if ! mountpoint -q "$backup_path"; then
-    echo "Mounting disk..."
-    mount "$backup_path"
+    echo "Error occurred when mounting disk"
+    exit 1
 fi
 
 
@@ -65,7 +71,7 @@ done
 
 
 # Unmount disk
-if [ "$unmount_dick" = true ]; then
+if [ "$unmount_disk" = true ]; then
     if mountpoint -q "$backup_path"; then
         echo "Unmounting disk..."
         umount "$backup_path"

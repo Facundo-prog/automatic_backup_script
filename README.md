@@ -4,6 +4,7 @@
 
 * Rsync (included in Debian, Ubuntu, Linux Mint, etc.)
 * SUDO or root access
+* External disk in format ext4
 * Familiarity with terminal commands
 
 </br>
@@ -23,7 +24,7 @@ Edit the mount points file:
 
 Replace the disk `UUID` and `mount point` (default is "/backup-disk") with your configuration:
 
-View fstab file for more information.
+View fstab.example file for more information.
 
 ```
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
@@ -32,7 +33,7 @@ View fstab file for more information.
 UUID=645648-kadfvadfb86teyn1sd3  /boot/efi       vfat    umask=0077      0       1
 
 # backup external disk
-UUID=<replace for your disk UUID>  /<replace for moun point>    ext4    defaults        0       0
+UUID=<replace for your disk UUID>  /<replace for mount point>   ext4   nofail   0  0
 ```
 
 Reload system dameon:

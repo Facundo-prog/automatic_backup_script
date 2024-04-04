@@ -13,4 +13,4 @@
 UUID=645648-kadfvadfb86teyn1sd3  /boot/efi       vfat    umask=0077      0       1
 
 # backup external disk
-UUID=45afds53g  /backup-disk    ext4    defaults        0       0
+UUID=45afds53g  /backup-disk    ext4    nofail        0       0

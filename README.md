@@ -10,7 +10,7 @@
 
 ## Quick Start
 
-### If the backup disk is different from the installation disk:
+### Create mount point in system:
 
 Copy the UUID of your external disk:
 
@@ -38,6 +38,10 @@ UUID=<replace for your disk UUID>  /<replace for moun point>    ext4    defaults
 Reload system dameon:
 
     sudo systemctl daemon-reload
+
+Mount disks:
+
+    sudo mount -a
 
 
 ### Modify custom service:
@@ -78,8 +82,8 @@ Enable backup service:
 ### Modify script:
 ```
 # Paths
-# Default backup saved on external disk
-external_disk=true
+# Unmount disk after save backup (default is true)
+unmount_dick=true
 
 # Disk backup mount point
 backup_path="/backup-disk"
@@ -99,7 +103,9 @@ The default path is ExecStart=/home/backup-files.sh
 
     sudo cp backup-files.sh /home/
 
+Concede execute permission:
 
+    sudo chmod +x /home/backup-files.sh
 
 ### Test script commands:
 
@@ -127,8 +133,6 @@ Start service:
 
 ## View Backup Files
 
-### If the backup disk is different from the installation disk:
-
 Show disks:
 
     sudo lsblk
@@ -136,10 +140,6 @@ Show disks:
 Mount the external disk. An example command contains disk /dev/sdb1 and a mount point is "/backup-files":
 
     sudo mount /dev/sdb1 /backup-files
-
-</br>
-
-### Or if the backup disk is the installation disk:
 
 Enter the folder configured for the script backup-files.sh:
 

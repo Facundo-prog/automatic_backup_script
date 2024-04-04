@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Paths
-# Default backup saved on external disk
-external_disk=true
+# Unmount disk after save backup
+unmount_dick=true
 
 # Disk backup mount point
 backup_path="/backup-disk"
@@ -44,19 +44,17 @@ perform_backup() {
     return 0
 }
 
-# Check if the mount point exists and disk is mounted
-if [ external_disk ]; then
-    # The mount point disk not exists
-    if [ ! -d "$backup_path" ]; then
-        mkdir -p "$backup_path"
-        echo "Mount point disk created"
-    fi
 
-    # The disk not mount
-    if ! mountpoint -q "$backup_path"; then
-        echo "Mounting disk..."
-        mount "$backup_path"
-    fi
+# The mount point disk not exists
+if [ ! -d "$backup_path" ]; then
+    mkdir -p "$backup_path"
+    echo "Mount point disk created"
+fi
+
+# The disk not mount
+if ! mountpoint -q "$backup_path"; then
+    echo "Mounting disk..."
+    mount "$backup_path"
 fi
 
 
@@ -66,10 +64,10 @@ for (( i=0; i<${#origins[@]}; i++ )); do
 done
 
 
-if [ external_disk ]; then
-    # Umount disk
+# Unmount disk
+if [ "$unmount_dick" = true ]; then
     if mountpoint -q "$backup_path"; then
-        echo "Umounting disk..."
+        echo "Unmounting disk..."
         umount "$backup_path"
     fi
 fi

@@ -70,11 +70,11 @@ WantedBy=multi-user.target
 
 ### Copy the service to the path "/etc/systemd/system/":
 
-Copy script:
+Copy service:
 
     sudo cp backup-files.service /etc/systemd/system/
 
-Enable backup service:
+Enable service:
 
     sudo systemctl enable backup-files.service
 
@@ -108,6 +108,8 @@ Concede execute permission:
 
     sudo chmod 754 /home/backup-files.sh
 
+
+
 ### Test script commands:
 
 Manually execute the script for testing:
@@ -127,6 +129,10 @@ Start service:
 ### Check the status of the service:
 
     sudo systemctl status backup-files.service
+
+Or view logs
+
+    journalctl -u backup-files.service
 
 
 </br>

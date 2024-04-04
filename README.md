@@ -140,13 +140,9 @@ Or view logs
 
 ## View Backup Files
 
-Show disks:
+Mount the external disk:
 
-    sudo lsblk
-
-Mount the external disk. An example command contains disk /dev/sdb1 and a mount point is "/backup-files":
-
-    sudo mount /dev/sdb1 /backup-files
+    sudo mount -a
 
 Enter the folder configured for the script backup-files.sh:
 

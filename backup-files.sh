@@ -1,11 +1,18 @@
 #!/bin/bash
 
+# Errors checker
+set -euo pipefail
+
+# Save log
+exec > >(tee -a /var/log/backup.log) 2>&1
+
 # Paths
 # Unmount disk after save backup
 unmount_disk=true
 
 # Disk backup mount point
 backup_path="/backup-disk"
+disk_UUID="aba6bd5-a5sd5b51d-adsfb4542"
 
 # Origins files array
 origins=("/home/facu/Documents/backup_folder")
@@ -26,22 +33,14 @@ perform_backup() {
 
     # The destination folder not exists
     if [ ! -d "$destination" ]; then
-        echo "Folder $destination created"
-        mkdir "$destination"
+        echo "Creating folder $destination"
+        mkdir -p "$destination"
     fi
 
     # Execute rsync
+    echo "Starting backup $origin -> $destination"
     rsync -av --delete "$origin/" "$destination/"
-
-    # Verify folder backup
-    if [ $? -eq 0 ]; then
-        echo "Backup successfully saved $origin on $destination"
-    else
-        echo "Error on copy files"
-        return 1
-    fi
-
-    return 0
+    echo "Backup successfully saved $origin on $destination"
 }
 
 
@@ -53,13 +52,13 @@ fi
 
 
 # Mount disk
-mount "$backup_path"
 echo "Mounting disk..."
+mount UUID="$disk_UUID" "$backup_path"
 
 
 # The disk not mount
 if ! mountpoint -q "$backup_path"; then
-    echo "Error occurred when mounting disk"
+    echo "Error occurred when mounting disk. Aborting..."
     exit 1
 fi
 
@@ -74,6 +73,6 @@ done
 if [ "$unmount_disk" = true ]; then
     if mountpoint -q "$backup_path"; then
         echo "Unmounting disk..."
-        umount "$backup_path"
+        umount -l "$backup_path"
     fi
 fi

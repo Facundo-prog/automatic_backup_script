@@ -88,6 +88,7 @@ unmount_dick=true
 
 # Disk backup mount point
 backup_path="/backup-disk"
+disk_UUID="aba6bd5-a5sd5b51d-adsfb4542"
 
 # Origins files array
 origins=("/home/user1/files" "/home/user2/files/documents")
@@ -95,6 +96,10 @@ origins=("/home/user1/files" "/home/user2/files/documents")
 # Destination backups
 destinations=("$backup_path/backup-user1" "$backup_path/backup-user2")
 ```
+
+Obtener el UUID de la particion deseada:
+    ```lsblk -f```
+
 
 
 

@@ -4,7 +4,7 @@
 set -euo pipefail
 
 # Save log
-exec > >(tee -a /var/log/backup.log) 2>&1
+exec > >(tee "$HOME/backup-disk.log") 2>&1
 
 # Paths
 # Unmount disk after save backup
@@ -38,11 +38,15 @@ perform_backup() {
     fi
 
     # Execute rsync
+    echo
     echo "Starting backup $origin -> $destination"
     rsync -av --delete "$origin/" "$destination/"
     echo "Backup successfully saved $origin on $destination"
 }
 
+# Init log
+echo "===== Backup created: $(date '+%Y-%m-%d %H:%M:%S') ====="
+echo
 
 # The mount point disk not exists
 if [ ! -d "$backup_path" ]; then

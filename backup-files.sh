@@ -4,7 +4,7 @@
 set -euo pipefail
 
 # Save log
-exec > >(tee "$HOME/backup-disk.log") 2>&1
+exec > >(tee /var/log/backup-disk.log) 2>&1
 
 # Paths
 # Unmount disk after save backup

@@ -54,13 +54,19 @@ if [ ! -d "$backup_path" ]; then
     echo "Mount point disk created"
 fi
 
-
 # Mount disk
-echo "Mounting disk..."
-mount UUID="$disk_UUID" "$backup_path"
+if mountpoint -q "$backup_path"; then
+    echo "$backup_path is already mounted."
+    mounted_src=$(findmnt -n -o SOURCE --target "$backup_path" 2>/dev/null || true)
+    echo "Mounted source: ${mounted_src:-unknown}"
+else
+    echo "Mounting disk..."
+    if ! mount UUID="$disk_UUID" "$backup_path"; then
+        echo "mount returned non-zero. Checking mountpoint..."
+    fi
+fi
 
-
-# The disk not mount
+# Check the disk not mount
 if ! mountpoint -q "$backup_path"; then
     echo "Error occurred when mounting disk. Aborting..."
     exit 1
